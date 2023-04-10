@@ -1,0 +1,45 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaApplication8.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:MessageBox.Avalonia.Controls;assembly=MessageBox.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="400"
+        x:Class="AvaloniaApplication8.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaApplication8">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+ 
+    <Panel>
+        <Image Source="../Assets/bg03.jpg"></Image>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
+                <controls:Hyperlink Url="https://www.plazmaburst2.com">
+                    <Image Source="../Assets/pb2_logo.png"></Image>
+                </controls:Hyperlink>
+        </StackPanel>
+		<StackPanel Margin="100">
+            <ProgressBar ProgressTextFormat="\{0\} / \{3\} support" Foreground="SeaGreen" Background="DarkGreen" ShowProgressText="True" Minimum="0" Maximum="200" Height="50" Width="800" HorizontalAlignment="Center" Margin="50" Value="{Binding Donations}"></ProgressBar>
+		</StackPanel>
+        <Grid>
+            <StackPanel Margin="100" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                <TextBlock Foreground="#5f6f88" Text="Welcome back, " FontSize="16">
+                    <controls:Hyperlink Url="{Binding LoginURL}">
+                        <TextBlock Foreground="#B0962C" Text="{Binding Login}" FontSize="16"></TextBlock>
+                    </controls:Hyperlink>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20">
+                <Button Command="{Binding DownloadGameCommand}" Width="230" Margin="5" BorderBrush="#3A546D" Background="#1B252F" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Download latest version</Button>
+                <Button Command="{Binding PlayGameCommand}" Width="230" Margin="5" BorderBrush="#3A546D" Background="#1B252F" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Play Plazma Burst 2</Button>
+                <Button Command="{Binding ChangeCredetinalsCommand}" Width="230" Margin="5" BorderBrush="#3A546D" Background="#1B252F" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Change login data</Button>
+            </StackPanel>
+        </Grid>
+    </Panel>
+</Window>
