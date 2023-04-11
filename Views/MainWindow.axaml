@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:MessageBox.Avalonia.Controls;assembly=MessageBox.Avalonia"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="400"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="AvaloniaApplication8.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="AvaloniaApplication8">
+        Icon="/Assets/favicon.ico"
+        Title="Plazma Burst 2 Launcher">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -18,7 +18,7 @@
 
  
     <Panel>
-        <Image Source="../Assets/bg03.jpg"></Image>
+        <Image Source="../Assets/bg03.jpg" Stretch="Fill"></Image>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
                 <controls:Hyperlink Url="https://www.plazmaburst2.com">
                     <Image Source="../Assets/pb2_logo.png"></Image>

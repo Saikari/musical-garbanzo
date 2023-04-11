@@ -5,18 +5,19 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using MessageBox.Avalonia;
+using MessageBox.Avalonia.DTO;
+using MessageBox.Avalonia.Enums;
 
 namespace AvaloniaApplication8.ViewModels
 {
-    public class MainWindowViewModel : ReactiveWindow<MainWindowViewModel> //ViewModelBase
+    public class MainWindowViewModel : ReactiveWindow<MainWindowViewModel> //ReactiveWindow<MainWindowViewModel> //ViewModelBase
     {
         private async Task DownloadGame()
         {
-            //var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-            //.GetMessageBoxStandardWindow("title", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed...");
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://www.plazmaburst2.com/launcher/time.php"); //""
@@ -32,15 +33,19 @@ namespace AvaloniaApplication8.ViewModels
                             await contentStream.CopyToAsync(fs);
                         }
                     }
-
-                    var a = MessageBoxManager.GetMessageBoxStandardWindow(title : "Title", text : "Text");
-                    await a.ShowDialog(this);
                 }
                 else
                 {
-
-
-
+                    var messageBoxStandardWindow = MessageBoxManager.GetMessageBoxStandardWindow(
+                        new MessageBoxStandardParams
+                        {
+                            ButtonDefinitions = ButtonEnum.Ok,
+                            ContentTitle = "Error",
+                            ContentHeader = "Error",
+                            ContentMessage = "Failed to download https://www.plazmaburst2.com/launcher/time.php. Check your internet connection.",
+                            WindowIcon = new WindowIcon(@"favicon.ico")
+                        });
+                    await messageBoxStandardWindow.Show();
                 }
             }
             using (HttpClient client = new HttpClient())
@@ -58,23 +63,37 @@ namespace AvaloniaApplication8.ViewModels
                             await contentStream.CopyToAsync(fs);
                         }
                     }
-
-                    //var a = await MessageBoxManager.GetMessageBoxInputWindow("asd", "asd");
+                    var messageBoxStandardWindow = MessageBoxManager.GetMessageBoxStandardWindow(
+                        new MessageBoxStandardParams
+                        {
+                            ButtonDefinitions = ButtonEnum.Ok,
+                            ContentTitle = "Success",
+                            ContentHeader = "Success",
+                            ContentMessage = "Successfully updated the game.",
+                            WindowIcon = new WindowIcon(@"favicon.ico")
+                        });
+                    await messageBoxStandardWindow.Show();
                 }
                 else
                 {
-
-
-
+                    var messageBoxStandardWindow = MessageBoxManager.GetMessageBoxStandardWindow(
+                        new MessageBoxStandardParams
+                        {
+                            ButtonDefinitions = ButtonEnum.Ok,
+                            ContentTitle = "Error",
+                            ContentHeader = "Error",
+                            ContentMessage = "Failed to download https://plazmaburst2.com/pb2/pb2_re34.swf. Check your internet connection.",
+                            WindowIcon = new WindowIcon(@"favicon.ico")
+                        });
+                    await messageBoxStandardWindow.Show();
                 }
             }
         }
         private async Task PlayGame()
         {
-
             switch (Environment.OSVersion.Platform)
             {
-                case System.PlatformID.Win32NT:
+                case PlatformID.Win32NT:
                     if (!File.Exists("flashplayer11_7r700_224_win_sa.exe"))
                     {
                         using (HttpClient client = new HttpClient())
@@ -92,11 +111,19 @@ namespace AvaloniaApplication8.ViewModels
                                         await contentStream.CopyToAsync(fs);
                                     }
                                 }
-                                //var a = await MessageBoxManager.GetMessageBoxInputWindow("asd", "asd");
                             }
                             else
                             {
-                                //var a = await MessageBoxManager.GetMessageBoxInputWindow("asd", "asd");
+                                var messageBoxStandardWindow = MessageBoxManager.GetMessageBoxStandardWindow(
+                                    new MessageBoxStandardParams
+                                    {
+                                        ButtonDefinitions = ButtonEnum.Ok,
+                                        ContentTitle = "Error",
+                                        ContentHeader = "Error",
+                                        ContentMessage = "Failed to download flashplayer11_7r700_224_win_sa.exe. Check your internet connection.",
+                                        WindowIcon = new WindowIcon(@"favicon.ico")
+                                    });
+                                await messageBoxStandardWindow.Show();
                             }
                         }
                     }
@@ -104,7 +131,7 @@ namespace AvaloniaApplication8.ViewModels
                     if (File.Exists("Plazma Burst 2.auth"))
                     {
                         string[] text = (await File.ReadAllTextAsync("Plazma Burst 2.auth")).Split('\n', 2);
-                        myparams = "pb2_re34.swf?l=" + text[0] + "&p=" + text[1] + "&from_standalone=1";
+                        myparams = $"pb2_re34.swf?l={text[0]}&p={text[1]}&from_standalone=1";
                     }
                     ProcessStartInfo startInfo = new ProcessStartInfo("flashplayer11_7r700_224_win_sa.exe")
                     {
@@ -114,7 +141,7 @@ namespace AvaloniaApplication8.ViewModels
                     Process.Start(startInfo);
                     Environment.Exit(0);
                     break;
-                case System.PlatformID.Unix:
+                case PlatformID.Unix:
                     if (!File.Exists("flashplayer-x86_64-unknown-linux-gnu"))
                     {
                         using (HttpClient client = new HttpClient())
@@ -132,11 +159,19 @@ namespace AvaloniaApplication8.ViewModels
                                         await contentStream.CopyToAsync(fs);
                                     }
                                 }
-                                //var a = await MessageBoxManager.GetMessageBoxInputWindow("asd", "asd");
                             }
                             else
                             {
-                                //var a = await MessageBoxManager.GetMessageBoxInputWindow("asd", "asd");
+                                var messageBoxStandardWindow = MessageBoxManager.GetMessageBoxStandardWindow(
+                                    new MessageBoxStandardParams
+                                    {
+                                        ButtonDefinitions = ButtonEnum.Ok,
+                                        ContentTitle = "Error",
+                                        ContentHeader = "Error",
+                                        ContentMessage = "Failed to download flashplayer-x86_64-unknown-linux-gnu. Check your internet connection.",
+                                        WindowIcon = new WindowIcon(@"favicon.ico")
+                                    });
+                                await messageBoxStandardWindow.Show();
                             }
                         }
                     }
@@ -144,7 +179,8 @@ namespace AvaloniaApplication8.ViewModels
                     if (File.Exists("Plazma Burst 2.auth"))
                     {
                         string[] text = (await File.ReadAllTextAsync("Plazma Burst 2.auth")).Split('\n', 2);
-                        myparams_linux = "flashplayer-x86_64-unknown-linux-gnu?l=" + text[0] + "&p=" + text[1] + "&from_standalone=1";
+                        myparams_linux =
+                            $"flashplayer-x86_64-unknown-linux-gnu?l={text[0]}&p={text[1]}&from_standalone=1";
                     }
                     ProcessStartInfo startInfo_linux = new ProcessStartInfo("flashplayer-x86_64-unknown-linux-gnu")
                     {
@@ -158,13 +194,29 @@ namespace AvaloniaApplication8.ViewModels
         }
         private async Task ChangeCredetinals()
         {
-
-                var a = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Test", "Test");
-                await a.ShowDialog(this);
-
-
+            var messageBoxWindow = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxInputWindow(new MessageBoxInputParams() 
+                    {  ContentHeader = "Login", WindowIcon = new WindowIcon(@"favicon.ico"), ContentTitle = "Login", ContentMessage = "Enter your login", WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInCenter = true});
+            var login = await messageBoxWindow.Show(); 
+            var messageBoxWindow2 = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxInputWindow(new MessageBoxInputParams() 
+                    {  ContentHeader = "Login", WindowIcon = new WindowIcon(@"favicon.ico"), ContentTitle = "Password", ContentMessage = "Enter your password", WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInCenter = true, IsPassword = true});
+            var password = await messageBoxWindow2.Show();
+            SaveLoginPassword(login.Message, password.Message);
         }
-
+        private async void SaveLoginPassword(string l, string p)
+        {
+            await File.WriteAllTextAsync("Plazma Burst 2.auth", $"{l}\n{p}");
+            LoginTemp = l;
+            LoginURLTemp = $"https://www.plazmaburst2.com/?a=&s=7&ac={l}";
+        }
+        private async Task<string> GetLogin()
+        {
+            if (!File.Exists("Plazma Burst 2.auth")) return "Guest";
+            string text = await File.ReadAllTextAsync("Plazma Burst 2.auth");
+            text = text.Split('\n', 2)[0];
+            return text;
+        }
         private async Task<double> GetLauncherInfo()
         {
             string content;
@@ -191,8 +243,16 @@ namespace AvaloniaApplication8.ViewModels
 
         public double Donations => 100.0;
 
-
-        public string Login => "Guest";
-        public string LoginURL => "https://www.plazmaburst2.com/?a=&s=7&ac=Guest";
+        public string LoginTemp = "Guest";
+        public string Login {
+            get => LoginTemp;
+            set => LoginTemp = value;
+        }
+        public string LoginURLTemp = "https://www.plazmaburst2.com/?a=&s=7&ac=.guest";
+        public string LoginURL
+        {
+            get => LoginURLTemp; 
+            set => LoginURLTemp = value;
+        }
     }
 }
